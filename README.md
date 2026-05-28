@@ -1,105 +1,33 @@
-# Nilkanth Kitchen + Cafe — Management System
+# 🍽️ Nilkanth Kitchen + Cafe — Management System
 
-## Project Structure
-```
-project/
-├── server/          ← Node.js + Express + MongoDB backend
-│   ├── models/
-│   │   ├── dish.js       (restaurant + cafe dishes, section field)
-│   │   ├── order.js      (restaurant table orders)
-│   │   └── cafeOrder.js  (cafe orders)
-│   ├── controllers/
-│   │   ├── adminController.js       (login, combined stats)
-│   │   ├── menuController.js        (CRUD with section filter)
-│   │   ├── orderController.js       (restaurant orders)
-│   │   └── cafeOrderController.js   (cafe orders)
-│   ├── routes/
-│   │   ├── adminRoutes.js    /api/admin
-│   │   ├── menuRoutes.js     /api/menu
-│   │   ├── orderRoutes.js    /api/order
-│   │   └── cafeRoutes.js     /api/cafe
-│   ├── middleware/auth.js     (JWT Bearer token)
-│   ├── configs/db.js
-│   ├── server.js
-│   └── seed.js        ← Run once to fill DB
-│
-└── client/          ← React + Vite + Tailwind frontend
-    └── src/
-        ├── Context/
-        │   ├── HotelContext.jsx   (restaurant auth + data)
-        │   └── CafeContext.jsx    (cafe menu + orders)
-        └── Pages/
-            ├── Auth/Login.jsx
-            ├── Staff/            (restaurant staff)
-            ├── Admin/            (admin dashboard)
-            └── Cafe/             (cafeteria + kitchen)
-```
+A full-stack POS and order management system that handles both a 
+sit-down restaurant and a self-order cafe under one roof.
 
-## Setup Instructions
+## ✨ Features
 
-### 1. Configure environment
-Edit `server/.env`:
-- Set your MongoDB Atlas URI
-- Change ADMIN_PASSWORD and STAFF_PASSWORD
-- Set a strong JWT_SECRET (64+ char random string)
+### 🍛 Restaurant Side
+- Table grid with live occupied/free status
+- Staff take & edit orders per table
+- Automatic GST billing with Cash / UPI / Card payment
+- Kitchen view with real-time order polling
 
-### 2. Install & seed backend
-```bash
-cd server
-npm install
-npm run seed     # populates DB with all menu items + sample orders
-npm run server   # starts server on port 7000
-```
+### ☕ Cafe Side  
+- Customer self-order menu (no staff needed)
+- Order token system (C-001, C-002...)
+- Kanban kitchen board — New → Preparing → Ready
+- Payment recording per order
 
-### 3. Install & run frontend
-```bash
-cd client
-npm install
-npm run dev      # starts on http://localhost:5173
-```
+### 🛠️ Admin Panel
+- Combined revenue dashboard (restaurant + cafe)
+- Add menu items to restaurant or cafe separately
+- Toggle item availability live
+- Top-selling items per section
 
-## Login Credentials (from .env)
-| Role  | Username | Password   | Redirects to |
-|-------|----------|------------|-------------|
-| Admin | HIT      | HIT@9328   | /admin       |
-| Staff | STAFF    | staff2525  | /staff       |
-
-## Routes & Screens
-
-### Public (no login)
-- `/cafeteria` — customer self-order cafe menu
-- `/login`     — staff/admin login
-
-### Staff (login required)
-- `/staff`                  — restaurant table grid
-- `/staff/order/:tableId`   — take/edit order for a table
-- `/staff/bill/:tableId`    — billing with GST + payment
-- `/kitchen`                — cafe kitchen Kanban board
-
-### Admin (admin login required)
-- `/admin`            — combined restaurant + cafe dashboard
-- `/admin/menulist`   — manage both restaurant & cafe menus
-- `/admin/additem`    — add dish to restaurant or cafe
-
-## API Endpoints
-
-### Auth
-- POST `/api/admin/login`
-
-### Menu (public read, admin write)
-- GET  `/api/menu?section=restaurant|cafe`
-- POST `/api/menu/add`
-- DELETE `/api/menu/:id`
-- PATCH  `/api/menu/:id/toggle`
-
-### Restaurant Orders
-- POST  `/api/order/save`
-- GET   `/api/order/active`
-- PATCH `/api/order/finalize/:tableNumber`
-
-### Cafe Orders
-- POST   `/api/cafe/order`           (public — customer)
-- GET    `/api/cafe/orders`          (kitchen staff)
-- PATCH  `/api/cafe/order/:id/status`
-- PATCH  `/api/cafe/order/:id/pay`
-- DELETE `/api/cafe/order/:id`
+## 🔧 Tech Stack
+| Layer | Tech |
+|-------|------|
+| Frontend | React 19, Vite, Tailwind CSS v4 |
+| Backend | Node.js, Express |
+| Database | MongoDB + Mongoose |
+| Auth | JWT (role-based: admin / staff) |
+| Charts | Chart.js + react-chartjs-2 |
